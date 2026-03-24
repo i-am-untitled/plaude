@@ -2,9 +2,18 @@
 
 import { FadeUp, StaggerContainer, FadeUpItem } from "@/components/shared/FadeUp";
 import { SectionLabel } from "@/components/shared/SectionLabel";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ShieldCheck, Users, Globe, Eye, Award, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+
+const values = [
+  { icon: ShieldCheck, title: "Compliance", description: "Adhering to the highest global regulatory standards to ensure security and trust." },
+  { icon: Users, title: "Customer-Focused", description: "Every line of code and every policy is designed with the user's success in mind." },
+  { icon: Globe, title: "Inclusion", description: "Financial tools built for everyone, regardless of their location or status." },
+  { icon: Eye, title: "Transparency", description: "Clear communication and open processes are the bedrock of our platform." },
+  { icon: Award, title: "Excellence", description: "We don't just meet industry standards, we strive to set new ones every day." },
+  { icon: RefreshCw, title: "Improvement", description: "Continuous iteration and learning are vital to our global mission." },
+];
 
 const leaders = [
   { name: "Tomiwa Adeyemo", title: "Chief Executive Officer", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&crop=face" },
@@ -50,48 +59,65 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Mission — text-focused with small accent card */}
-      <section className="py-24 sm:py-32">
+      {/* Mission — full-width gradient: soft mint → soft lavender */}
+      <section
+        className="py-20 sm:py-28"
+        style={{ background: "linear-gradient(to right, #d1fae5, #ede9fe)" }}
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <FadeUp>
-            <div className="grid md:grid-cols-[1fr_auto] gap-12 items-start">
-              <div className="max-w-3xl">
-                <SectionLabel>Our Mission</SectionLabel>
-                <h2 className="mt-4 text-2xl sm:text-3xl md:text-[2rem] font-light text-on-background leading-[1.3]">
-                  On a mission to make{" "}
-                  <span className="font-bold text-primary-brand">global financial infrastructure</span>{" "}
-                  accessible to every business — regardless of where they&apos;re based.
-                </h2>
-                <p className="mt-6 text-on-background/60 leading-relaxed">
-                  Geography should never be a barrier to business. We exist to
-                  make cross-border payments as simple and secure as sending an
-                  email — for any business, anywhere.
+            <div className="grid md:grid-cols-[1.4fr_1fr] gap-6 items-center">
+              {/* Left — mission quote in a white card */}
+              <div className="rounded-2xl bg-white p-10 sm:p-12 atmospheric-shadow">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-primary-brand/50 mb-5">Our Mission</p>
+                <p className="text-xl sm:text-2xl font-medium text-on-background leading-[1.5]">
+                  &ldquo;On a mission to make global financial infrastructure accessible, transparent,
+                  and seamlessly integrated for every citizen of the world.&rdquo;
                 </p>
-
-                {/* Small value indicators below text */}
-                <div className="flex items-center gap-6 mt-8">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary-brand" />
-                    <span className="text-xs font-medium text-on-background/50">Regulated</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-secondary-brand" />
-                    <span className="text-xs font-medium text-on-background/50">Compliant</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary-brand" />
-                    <span className="text-xs font-medium text-on-background/50">Transparent</span>
-                  </div>
-                </div>
               </div>
 
-              {/* Small accent card */}
-              <div className="hidden md:block rounded-2xl bg-secondary-brand/10 p-5 min-w-[140px]">
-                <p className="text-3xl font-bold text-secondary-brand">150+</p>
-                <p className="text-xs text-on-background/50 mt-1">Countries served</p>
+              {/* Right — two stat cards side by side */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-2xl bg-secondary-brand/20 p-7 sm:p-8">
+                  <p className="text-3xl sm:text-4xl font-bold text-secondary-brand">190+</p>
+                  <p className="text-xs text-on-background/50 mt-2 leading-snug">Countries Covered</p>
+                </div>
+                <div className="rounded-2xl bg-surface-container/30 p-7 sm:p-8">
+                  <p className="text-3xl sm:text-4xl font-bold text-primary-brand">40M+</p>
+                  <p className="text-xs text-on-background/50 mt-2 leading-snug">Transactions Processed</p>
+                </div>
               </div>
             </div>
           </FadeUp>
+        </div>
+      </section>
+
+      {/* Guided by Core Values — 3×2 grid with icons (matching design) */}
+      <section className="py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <FadeUp>
+            <div className="mb-12">
+              <div className="section-rule mb-8" />
+              <p className="text-sm text-on-background/40 italic">Guided by Core Values</p>
+            </div>
+          </FadeUp>
+
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {values.map((value, i) => {
+              const Icon = value.icon;
+              return (
+                <FadeUpItem key={i}>
+                  <div className="rounded-3xl bg-surface-lowest p-7 h-full hover:bg-surface-low transition-colors">
+                    <div className="mb-4 inline-flex items-center justify-center rounded-2xl bg-white p-3">
+                      <Icon className="size-5 text-primary-brand" />
+                    </div>
+                    <h3 className="text-base font-semibold text-on-background">{value.title}</h3>
+                    <p className="mt-2 text-sm text-on-background/60 leading-relaxed">{value.description}</p>
+                  </div>
+                </FadeUpItem>
+              );
+            })}
+          </StaggerContainer>
         </div>
       </section>
 
@@ -130,59 +156,28 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Leadership — CEO large on left + city photo with teal accent on right, then row of others below */}
+      {/* The Team — simple row of 4 portraits matching design */}
       <section className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <FadeUp>
-            <div className="text-center mb-16">
-              <SectionLabel>Meet the Leadership</SectionLabel>
+            <div className="mb-12">
+              <SectionLabel>The Team</SectionLabel>
               <h2 className="mt-4 text-2xl sm:text-3xl md:text-4xl font-semibold text-on-background">
-                Meet the leadership.
+                Meet the Leadership
               </h2>
-              <p className="mt-4 text-on-background/60">
-                A diverse team of engineers, financial experts, and product builders
-                dedicated to your success.
-              </p>
             </div>
           </FadeUp>
 
-          {/* Top row — CEO large + cityscape with teal accent */}
-          <FadeUp>
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <div className="rounded-3xl overflow-hidden atmospheric-shadow-lg">
-                <Image
-                  src={leaders[0].image}
-                  alt={leaders[0].name}
-                  width={600}
-                  height={700}
-                  className="w-full aspect-[4/5] object-cover grayscale"
-                />
-              </div>
-              <div className="rounded-3xl overflow-hidden atmospheric-shadow relative">
-                <Image
-                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=700&fit=crop"
-                  alt="Cityscape"
-                  width={600}
-                  height={700}
-                  className="w-full aspect-[4/5] object-cover"
-                />
-                {/* Teal accent overlay at bottom */}
-                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-secondary-brand/40 to-transparent h-1/3" />
-              </div>
-            </div>
-          </FadeUp>
-
-          {/* Bottom row — other leaders */}
           <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {leaders.map((leader, i) => (
               <FadeUpItem key={i}>
-                <div className="text-center">
-                  <div className={`rounded-2xl overflow-hidden atmospheric-shadow mb-4 ${i === 1 ? "ring-2 ring-secondary-brand/20" : ""}`}>
+                <div>
+                  <div className="rounded-2xl overflow-hidden atmospheric-shadow mb-4">
                     <Image
                       src={leader.image}
                       alt={leader.name}
-                      width={300}
-                      height={375}
+                      width={400}
+                      height={500}
                       className="w-full aspect-[4/5] object-cover"
                     />
                   </div>
