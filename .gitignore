@@ -13,6 +13,10 @@
 # testing
 /coverage
 
+
+# design assets
+/design
+
 # next.js
 /.next/
 /out/
