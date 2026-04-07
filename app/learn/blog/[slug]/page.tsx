@@ -1,12 +1,38 @@
-"use client";
-
 import { FadeUp } from "@/components/shared/FadeUp";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { notFound } from "next/navigation";
+import { BLOG_POSTS, getBlogPost } from "@/lib/blog-data";
+import type { Metadata } from "next";
 
-export default function BlogDetailPage() {
+export async function generateStaticParams() {
+  return BLOG_POSTS.map((post) => ({ slug: post.slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getBlogPost(slug);
+  return { title: post ? `${post.title} — Plaude Journal` : "Blog" };
+}
+
+export default async function BlogDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const post = getBlogPost(slug);
+
+  if (!post) notFound();
+
+  const recommended = BLOG_POSTS.filter((p) => p.slug !== slug).slice(0, 3);
+
   return (
     <div>
       {/* Hero */}
@@ -14,29 +40,36 @@ export default function BlogDetailPage() {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/[0.03] rounded-full blur-3xl" />
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 z-10">
           <FadeUp>
-            <Link href="/learn/blog" className="inline-flex items-center gap-1.5 text-sm text-on-primary/60 hover:text-on-primary transition-colors mb-8">
+            <Link
+              href="/learn/blog"
+              className="inline-flex items-center gap-1.5 text-sm text-on-primary/60 hover:text-on-primary transition-colors mb-8"
+            >
               <ArrowLeft className="size-4" />
               Back to Journal
             </Link>
             <span className="block text-[11px] font-semibold uppercase tracking-[0.12em] text-on-primary/60 mb-4">
-              Think Pieces
+              {post.category}
             </span>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-on-primary leading-[1.08] tracking-[-0.02em]">
-              The Future of Cross-Border Liquidity in a Post-Digital Era
+              {post.title}
             </h1>
-            <p className="mt-6 text-on-primary/60 leading-relaxed">
-              Unpacking the geopolitical shifts in global capital flow as legacy networks meet decentralised ecosystems.
-            </p>
-            <div className="flex items-center gap-3 mt-8">
-              <div className="h-10 w-10 rounded-full bg-on-primary/10 flex items-center justify-center text-sm font-bold text-on-primary">
-                DK
-              </div>
-              <div>
-                <p className="text-sm font-medium text-on-primary">David Kruger</p>
-                <p className="text-xs text-on-primary/50">VP, Strategic Alliances &middot; Mar 8, 2026 &middot; 7 min read</p>
-              </div>
-            </div>
+            <p className="mt-6 text-on-primary/60 leading-relaxed">{post.excerpt}</p>
+            <p className="mt-6 text-xs text-on-primary/40">{post.readTime}</p>
           </FadeUp>
+        </div>
+      </section>
+
+      {/* Hero image */}
+      <section className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+        <div className="rounded-3xl overflow-hidden atmospheric-shadow-lg">
+          <Image
+            src={post.heroImage}
+            alt={post.title}
+            width={1024}
+            height={576}
+            className="w-full aspect-[16/9] object-cover"
+            priority
+          />
         </div>
       </section>
 
@@ -45,67 +78,7 @@ export default function BlogDetailPage() {
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <FadeUp>
             <div className="prose prose-lg max-w-none text-on-background/80">
-              <p className="text-lg leading-relaxed">
-                The infrastructure of global finance is undergoing a seismic shift.
-                For decades, correspondent banking networks and slow-moving settlement
-                systems have defined the speed at which capital crosses borders.
-              </p>
-
-              <h2 className="text-2xl font-semibold text-on-background mt-12 mb-4">
-                The Fragmentation Paradox
-              </h2>
-              <p>
-                As traditional banking networks evolve, we&apos;re witnessing a fragmentation
-                paradox — more rails, more options, but also more complexity. The businesses
-                that win will be those that can navigate this landscape without adding operational overhead.
-              </p>
-
-              {/* Inline image */}
-              <div className="my-10 rounded-2xl overflow-hidden atmospheric-shadow">
-                <Image
-                  src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&h=400&fit=crop"
-                  alt="Global financial networks"
-                  width={800}
-                  height={400}
-                  className="w-full aspect-[2/1] object-cover"
-                />
-              </div>
-
-              {/* Pull quote */}
-              <blockquote className="my-12 pl-6 py-6 bg-surface-lowest rounded-2xl">
-                <p className="text-xl font-semibold text-on-background italic leading-snug">
-                  &ldquo;The next decade won&apos;t be about the speed of the transaction,
-                  but the intelligence of the asset being moved.&rdquo;
-                </p>
-              </blockquote>
-
-              <h2 className="text-2xl font-semibold text-on-background mt-12 mb-4">
-                The Rise of Sovereign Digital Assets
-              </h2>
-              <p>
-                Central Bank Digital Currencies (CBDCs) represent perhaps the most
-                significant shift in global payments infrastructure since the advent
-                of SWIFT. As more nations pilot and launch their own digital currencies,
-                the implications for cross-border settlement are profound.
-              </p>
-
-              {/* Inline image */}
-              <div className="my-10 rounded-2xl overflow-hidden atmospheric-shadow">
-                <Image
-                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=400&fit=crop"
-                  alt="Modern architecture"
-                  width={800}
-                  height={400}
-                  className="w-full aspect-[2/1] object-cover"
-                />
-              </div>
-
-              <p>
-                For platforms like Plaude, this means building infrastructure that is
-                agnostic to the rail — whether it&apos;s traditional banking, blockchain-based
-                settlement, or CBDC networks. The future belongs to the platforms that
-                can abstract away this complexity.
-              </p>
+              {post.content}
             </div>
           </FadeUp>
         </div>
@@ -141,23 +114,19 @@ export default function BlogDetailPage() {
           <FadeUp>
             <h2 className="text-2xl font-semibold text-on-background mb-8">Recommended for You</h2>
             <div className="grid gap-6 sm:grid-cols-3">
-              {[
-                { title: "The 2026 Outlook: Algorithmic Arbitrage in Frontier Markets", image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=250&fit=crop" },
-                { title: "An Introduction: Anti-Fintech Behavioral Financing?", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop" },
-                { title: "Deconstructing Programmable Money", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=250&fit=crop" },
-              ].map((post, i) => (
-                <Link key={i} href="/learn/blog" className="group">
+              {recommended.map((rec) => (
+                <Link key={rec.slug} href={`/learn/blog/${rec.slug}`} className="group">
                   <div className="rounded-2xl overflow-hidden atmospheric-shadow">
                     <Image
-                      src={post.image}
-                      alt={post.title}
+                      src={rec.heroImage}
+                      alt={rec.title}
                       width={400}
                       height={250}
                       className="w-full aspect-[16/10] object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
                   <h4 className="mt-3 text-sm font-semibold text-on-background group-hover:text-primary-brand transition-colors leading-snug">
-                    {post.title}
+                    {rec.title}
                   </h4>
                 </Link>
               ))}
