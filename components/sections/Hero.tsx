@@ -32,12 +32,14 @@ export function Hero() {
                 Get Started — It&apos;s Free
                 <ArrowRight className="size-4" />
               </Link>
+              {/* Book a Demo — hidden until booking link is available
               <Link
                 href="#"
                 className="inline-flex items-center justify-center rounded-full h-12 px-8 text-[15px] font-medium text-on-background bg-surface-lowest/60 hover:bg-surface-low transition-all duration-200"
               >
                 Book a Demo
               </Link>
+              */}
             </div>
           </div>
         }
